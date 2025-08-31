@@ -1,0 +1,75 @@
+.board {
+  padding: 20px;
+  background-color: #0079bf; /* Trello-like blue */
+  height: 100vh;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.board-header {
+  margin-bottom: 20px;
+}
+
+.board-title {
+  color: white;
+  font-size: 24px;
+}
+
+/* src/components/Board.css */
+
+/* ... any existing Board.css styles ... */
+
+.board-lists-container {
+  display: flex;
+  align-items: flex-start; /* Align lists to the top */
+  overflow-x: auto; /* Allow horizontal scrolling for lists */
+  padding: 8px;
+}
+
+/* Container for the "Add List" form */
+.add-list {
+  background-color: #ffffff3d; /* Semi-transparent white */
+  border-radius: 8px;
+  width: 272px;
+  margin: 0 8px;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+.add-list-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input for the new list title */
+.add-list-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #dfe1e6;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.add-list-input:focus {
+  outline: none;
+  border-color: #0079bf;
+}
+
+/* "Add List" button */
+.add-list-button {
+  background-color: #0079bf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.add-list-button:hover {
+  background-color: #026aa7;
+}

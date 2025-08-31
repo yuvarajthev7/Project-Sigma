@@ -1,0 +1,59 @@
+.card{
+  padding: 10px;
+  margin-bottom: 8px;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow:0 1px 0 rgba(9,30,66,0.25);
+  cursor:pointer;
+}
+.card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  font-size: 14px;
+  color: #172b4d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 36px; /* Ensures card has a minimum height */
+}
+
+/* Delete button styles */
+.delete-card-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b778c;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  visibility: hidden; /* Hide by default */
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.card:hover .delete-card-button {
+  visibility: visible; /* Show on card hover */
+  opacity: 1;
+}
+
+.delete-card-button:hover {
+  background-color: #dfe1e6;
+  color: #172b4d;
+}
+
+/* Edit textarea styles */
+.card-edit-textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 0; /* Remove padding to align with card's own padding */
+  box-sizing: border-box;
+  border-radius: 4px;
+  outline: none;
+}

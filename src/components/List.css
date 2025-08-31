@@ -1,0 +1,107 @@
+/* Main list container */
+.list {
+  background-color: #ebecf0; /* A light grey, Trello-like color */
+  border-radius: 8px;
+  width: 272px;
+  margin: 0 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; /* Prevents lists from shrinking */
+  max-height: 100%;
+}
+
+/* List title */
+.list-title {
+  font-weight: 600;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  color: #172b4d; /* Dark blue/grey for text */
+}
+
+/* Container for the cards with scrolling */
+.card-container {
+  overflow-y: auto; /* Add scroll for long lists */
+  min-height: 20px; /* Ensures droppable area is present even when empty */
+  padding: 0 4px;
+}
+
+/* Styling for the form to add a new card */
+.add-card-form {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input field for the new card text */
+.add-card-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #dfe1e6;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: none;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.add-card-input:focus {
+  outline: none;
+  border-color: #0079bf; /* Highlight color on focus */
+}
+
+/* "Add Card" button */
+.add-card-button {
+  background-color: #0079bf; /* A nice blue */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  align-self: flex-start; /* Align button to the left */
+}
+
+.add-card-button:hover {
+  background-color: #026aa7; /* Darker blue on hover */
+}
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.list-title {
+  font-weight: 600;
+  color: #172b4d;
+  margin: 0; /* Remove default margin */
+}
+
+.delete-list-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b778c;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+.delete-list-button:hover {
+  background-color: #dfe1e6;
+  color: #172b4d;
+}
+
+.list-title-input {
+  font-family: inherit;
+  font-size: 16px; /* Match the h3 font-size */
+  font-weight: 600;
+  color: #172b4d;
+  border: 2px solid #0079bf; /* Highlight when editing */
+  border-radius: 4px;
+  padding: 2px 6px; /* Adjust padding to match */
+  width: 100%;
+}
