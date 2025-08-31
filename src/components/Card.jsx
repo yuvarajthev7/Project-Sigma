@@ -2,10 +2,9 @@ import React from 'react';
 import { Draggable } from '@hello-pangea/dnd';
 import './Card.css';
 
-// Props are cleaned up
-function Card({ card, index, listId, onOpenModal }) {
+// Added 'onDeleteCard' to the list of props
+function Card({ card, index, listId, onOpenModal, onDeleteCard }) {
   return (
-    // Use card._id for the draggableId
     <Draggable draggableId={card._id} index={index}>
       {(provided) => (
         <div
@@ -16,7 +15,15 @@ function Card({ card, index, listId, onOpenModal }) {
           onClick={() => onOpenModal(card._id, listId)}
         >
           <span>{card.text}</span>
-          {/* We will add the delete button back when we connect it to the backend */}
+          <button
+            className="delete-card-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDeleteCard(card._id, listId);
+            }}
+          >
+            &times;
+          </button>
         </div>
       )}
     </Draggable>

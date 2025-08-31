@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import List from './List';
 import './Board.css';
 
-function Board({ title, lists, onOpenModal, onAddList, onAddCard }) {
-  // State for the new list's title
+// 1. Make sure 'onDeleteList' is received here
+function Board({ title, lists, onOpenModal, onAddList, onAddCard, onDeleteList, onDeleteCard }) {
   const [newListTitle, setNewListTitle] = useState('');
 
   const handleInputChange = (event) => {
@@ -14,7 +14,7 @@ function Board({ title, lists, onOpenModal, onAddList, onAddCard }) {
     event.preventDefault();
     if (newListTitle.trim()) {
       onAddList(newListTitle);
-      setNewListTitle(''); // Reset input after submission
+      setNewListTitle('');
     }
   };
 
@@ -32,9 +32,10 @@ function Board({ title, lists, onOpenModal, onAddList, onAddCard }) {
             cards={list.cards}
             onOpenModal={onOpenModal}
             onAddCard={onAddCard}
+            onDeleteCard={onDeleteCard}
+            onDeleteList={onDeleteList} // 2. And make sure it's passed down here
           />
         ))}
-        {/* --- Form to Add a New List --- */}
         <div className="add-list">
           <form onSubmit={handleSubmit} className="add-list-form">
             <input

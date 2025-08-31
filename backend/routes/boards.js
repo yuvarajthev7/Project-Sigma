@@ -118,5 +118,19 @@ router.route('/:boardId/lists/:listId/cards/:cardId').patch((req, res) => {
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+router.route('/:boardId/lists/:listId/cards/:cardId').delete((req, res) => {
+  Board.findById(req.params.boardId)
+    .then(board => {
+      const list = board.lists.id(req.params.listId);
+      if (!list) return res.status(404).json('Error: List not found.');
 
+      // Pull (remove) the card from the list's cards array
+      list.cards.pull({ _id: req.params.cardId });
+
+      board.save()
+        .then(() => res.json('Card deleted.'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 module.exports = router;

@@ -148,7 +148,28 @@ function App() {
     });
     setBoards(updatedBoards);
   };
-
+  const handleDeleteCard = (cardId, listId) => {
+    axios.delete(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`)
+      .then(res => {
+        console.log(res.data); // Should log "Card deleted."
+        // Update state to remove the card from the UI
+        const updatedBoards = boards.map(board => {
+          if (board._id === activeBoardId) {
+            const updatedLists = board.lists.map(list => {
+              if (list._id === listId) {
+                const updatedCards = list.cards.filter(card => card._id !== cardId);
+                return { ...list, cards: updatedCards };
+              }
+              return list;
+            });
+            return { ...board, lists: updatedLists };
+          }
+          return board;
+        });
+        setBoards(updatedBoards);
+      })
+      .catch(err => console.error(err));
+  };
   const handleDeleteList = (listId) => {
     axios.delete(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}`)
       .then(response => {
@@ -202,6 +223,16 @@ function App() {
               {board.title}
             </button>
           ))}
+          <form onSubmit={handleAddBoard} className="new-board-header-form">
+            <input
+              type="text"
+              value={newBoardTitle}
+              onChange={(e) => setNewBoardTitle(e.target.value)}
+              placeholder="New board title..."
+              className="new-board-header-input"
+            />
+            <button type="submit" className="new-board-header-button">+</button>
+          </form>
         </nav>
       </header>
 
@@ -213,7 +244,9 @@ function App() {
           onAddList={handleAddList}
           onAddCard={handleAddCard}
           onDeleteList={handleDeleteList}
+          onUpdateCard={handleUpdateCard}
           onOpenModal={handleOpenModal}
+          onDeleteCard={handleDeleteCard}
         />
       </DragDropContext>
 

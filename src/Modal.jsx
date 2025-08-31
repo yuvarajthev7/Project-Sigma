@@ -17,11 +17,12 @@ function Modal({ card, onClose, onUpdateCard }) {
   }
 
   const handleTitleBlur = () => {
-    onUpdateCard(card.id, card.listId, { text: title });
+    // Pass up the boardId, listId, and cardId to the handler
+    onUpdateCard(card._id, card.listId, { text: title });
   };
 
   const handleDescriptionBlur = () => {
-    onUpdateCard(card.id, card.listId, { description: description });
+    onUpdateCard(card._id, card.listId, { description: description });
   };
 
   return (

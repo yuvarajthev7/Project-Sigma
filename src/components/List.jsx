@@ -6,7 +6,7 @@ import Card from './Card';
 import './List.css';
 
 // Add onDeleteList to the props
-function List({ title, cards, id, onAddCard, onOpenModal, onDeleteList }) {
+function List({ title, cards, id, onAddCard, onOpenModal, onDeleteList, onDeleteCard }) {
   const [newCardText, setNewCardText] = useState('');
 
   const handleInputChange = (event) => {
@@ -46,6 +46,7 @@ function List({ title, cards, id, onAddCard, onOpenModal, onDeleteList }) {
                 index={index}
                 listId={id}
                 onOpenModal={onOpenModal}
+                onDeleteCard={onDeleteCard}
               />
             ))}
             {provided.placeholder}
