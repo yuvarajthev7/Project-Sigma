@@ -3,7 +3,7 @@ import { Draggable } from '@hello-pangea/dnd';
 import './Card.css';
 
 // Added 'onDeleteCard' to the list of props
-function Card({ card, index, listId, onOpenModal, onDeleteCard }) {
+function Card({ card, index, listId, onOpenModal, onDeleteCard, onUpdateCard }) {
   return (
     <Draggable draggableId={card._id} index={index}>
       {(provided) => (

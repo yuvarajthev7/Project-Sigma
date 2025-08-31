@@ -1,10 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 import List from './List';
 import './Board.css';
 
-// 1. Make sure 'onDeleteList' is received here
-function Board({ title, lists, onOpenModal, onAddList, onAddCard, onDeleteList, onDeleteCard }) {
+function Board({
+  title,
+  lists,
+  onOpenModal,
+  onAddList,
+  onAddCard,
+  onDeleteList,
+  onDeleteCard,
+  onEditBoardTitle,
+  onDeleteBoard
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [boardTitle, setBoardTitle] = useState(title);
   const [newListTitle, setNewListTitle] = useState('');
+  useEffect(() => {
+    setBoardTitle(title);
+  }, [title]); 
+
+  const handleTitleSubmit = (e) => {
+    e.preventDefault();
+    if (boardTitle.trim()) {
+      onEditBoardTitle(boardTitle);
+    }
+    setIsEditing(false);
+  };
 
   const handleInputChange = (event) => {
     setNewListTitle(event.target.value);
@@ -21,7 +43,25 @@ function Board({ title, lists, onOpenModal, onAddList, onAddCard, onDeleteList, 
   return (
     <div className="board">
       <header className="board-header">
-        <h2 className="board-title">{title}</h2>
+        {isEditing ? (
+          <form onSubmit={handleTitleSubmit} className="board-title-form">
+            <input
+              type="text"
+              value={boardTitle}
+              onChange={(e) => setBoardTitle(e.target.value)}
+              onBlur={handleTitleSubmit}
+              autoFocus
+              className="board-title-input"
+            />
+          </form>
+        ) : (
+          <h2 className="board-title" onClick={() => setIsEditing(true)}>
+            {boardTitle}
+          </h2>
+        )}
+        <button className="delete-board-button" onClick={onDeleteBoard}>
+          Delete Board
+        </button>
       </header>
       <div className="board-lists-container">
         {lists && lists.map((list) => (
@@ -33,7 +73,7 @@ function Board({ title, lists, onOpenModal, onAddList, onAddCard, onDeleteList, 
             onOpenModal={onOpenModal}
             onAddCard={onAddCard}
             onDeleteCard={onDeleteCard}
-            onDeleteList={onDeleteList} // 2. And make sure it's passed down here
+            onDeleteList={onDeleteList}
           />
         ))}
         <div className="add-list">

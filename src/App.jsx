@@ -25,43 +25,25 @@ function App() {
 
   const activeBoard = boards.find((board) => board._id === activeBoardId);
 
-  // --- NEW: handleDragEnd is now fully implemented ---
   const handleDragEnd = (result) => {
     const { destination, source } = result;
-    if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) {
       return;
     }
-
-    // Create a deep copy of the board to modify
     const board = JSON.parse(JSON.stringify(activeBoard));
     const sourceList = board.lists.find(list => list._id === source.droppableId);
     const destinationList = board.lists.find(list => list._id === destination.droppableId);
-
-    // Move the card in the local state (optimistic update)
     const [movedCard] = sourceList.cards.splice(source.index, 1);
     destinationList.cards.splice(destination.index, 0, movedCard);
-
-    // Update the UI immediately
     const updatedBoards = boards.map(b => b._id === activeBoardId ? board : b);
     setBoards(updatedBoards);
-
-    // Send the update to the backend
     axios.post(`http://localhost:5000/api/boards/${activeBoardId}/dnd`, { source, destination })
-      .catch(err => {
-        console.error('Failed to save drag and drop changes', err);
-        // Optional: Revert state if the API call fails
-      });
+      .catch(err => console.error('Failed to save drag and drop changes', err));
   };
 
-  // ... (handleAddBoard, handleAddList, etc. remain the same) ...
   const handleAddBoard = (e) => {
     e.preventDefault();
     if (newBoardTitle.trim() === '') return;
-
     axios.post('http://localhost:5000/api/boards/add', { title: newBoardTitle })
       .then(response => {
         const newBoard = response.data;
@@ -74,7 +56,6 @@ function App() {
 
   const handleAddList = (listTitle) => {
     if (!activeBoardId) return;
-
     axios.post(`http://localhost:5000/api/boards/${activeBoardId}/lists/add`, { title: listTitle })
       .then(response => {
         const newList = response.data;
@@ -122,37 +103,32 @@ function App() {
   };
 
   const handleUpdateCard = (cardId, listId, newDetails) => {
-    axios.patch(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`, newDetails)
-      .catch(error => {
-        console.log('Error updating card: ', error);
+  const updatedBoards = boards.map(board => {
+    if (board._id === activeBoardId) {
+      const updatedLists = board.lists.map(list => {
+        if (list._id === listId) {
+          const updatedCards = list.cards.map(card => {
+            if (card._id === cardId) {
+              return { ...card, ...newDetails };
+            }
+            return card;
+          });
+          return { ...list, cards: updatedCards };
+        }
+        return list;
       });
+      return { ...board, lists: updatedLists };
+    }
+    return board;
+  });
+  setBoards(updatedBoards);
+  axios.patch(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`, newDetails)
+    .catch(error => console.log('Error updating card: ', error));
+};
 
-    // Note: We also need to optimistically update the state here for the UI to change instantly.
-    const updatedBoards = boards.map(board => {
-      if (board._id === activeBoardId) {
-        const updatedLists = board.lists.map(list => {
-          if (list._id === listId) {
-            const updatedCards = list.cards.map(card => {
-              if (card._id === cardId) {
-                return { ...card, ...newDetails };
-              }
-              return card;
-            });
-            return { ...list, cards: updatedCards };
-          }
-          return list;
-        });
-        return { ...board, lists: updatedLists };
-      }
-      return board;
-    });
-    setBoards(updatedBoards);
-  };
   const handleDeleteCard = (cardId, listId) => {
     axios.delete(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`)
       .then(res => {
-        console.log(res.data); // Should log "Card deleted."
-        // Update state to remove the card from the UI
         const updatedBoards = boards.map(board => {
           if (board._id === activeBoardId) {
             const updatedLists = board.lists.map(list => {
@@ -170,10 +146,10 @@ function App() {
       })
       .catch(err => console.error(err));
   };
+
   const handleDeleteList = (listId) => {
     axios.delete(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}`)
       .then(response => {
-        console.log(response.data);
         const updatedBoards = boards.map(board => {
           if (board._id === activeBoardId) {
             const updatedLists = board.lists.filter(list => list._id !== listId);
@@ -186,7 +162,26 @@ function App() {
       .catch(error => console.log('Error deleting list: ', error));
   };
 
-  if (boards.length === 0) {
+  const handleEditBoardTitle = (newTitle) => {
+    const updatedBoards = boards.map(board =>
+      board._id === activeBoardId ? { ...board, title: newTitle } : board
+    );
+    setBoards(updatedBoards);
+    axios.patch(`http://localhost:5000/api/boards/${activeBoardId}`, { title: newTitle })
+      .catch(error => console.log('Error updating board title: ', error));
+  };
+
+  const handleDeleteBoard = () => {
+    axios.delete(`http://localhost:5000/api/boards/${activeBoardId}`)
+      .then(res => {
+        const remainingBoards = boards.filter(board => board._id !== activeBoardId);
+        setBoards(remainingBoards);
+        setActiveBoardId(remainingBoards.length > 0 ? remainingBoards[0]._id : null);
+      })
+      .catch(err => console.error(err));
+  };
+
+  if (boards.length === 0 && !activeBoardId) {
     return (
       <div className="App new-board-container">
         <form onSubmit={handleAddBoard} className="new-board-form">
@@ -236,7 +231,6 @@ function App() {
         </nav>
       </header>
 
-      {/* Pass the handleDragEnd function to the context provider */}
       <DragDropContext onDragEnd={handleDragEnd}>
         <Board
           title={activeBoard.title}
@@ -244,9 +238,10 @@ function App() {
           onAddList={handleAddList}
           onAddCard={handleAddCard}
           onDeleteList={handleDeleteList}
-          onUpdateCard={handleUpdateCard}
-          onOpenModal={handleOpenModal}
           onDeleteCard={handleDeleteCard}
+          onOpenModal={handleOpenModal}
+          onDeleteBoard={handleDeleteBoard}
+          onEditBoardTitle={handleEditBoardTitle}
         />
       </DragDropContext>
 

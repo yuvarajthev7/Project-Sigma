@@ -104,7 +104,6 @@ router.route('/:boardId/lists/:listId/cards/:cardId').patch((req, res) => {
       if (!card) {
         return res.status(404).json('Error: Card not found.');
       }
-
       if (req.body.text !== undefined) {
         card.text = req.body.text;
       }
@@ -133,4 +132,24 @@ router.route('/:boardId/lists/:listId/cards/:cardId').delete((req, res) => {
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+router.route('/:boardId').patch((req, res) => {
+  Board.findById(req.params.boardId)
+    .then(board => {
+      if (!board) {
+        return res.status(404).json('Error: Board not found.');
+      }
+      board.title = req.body.title;
+      board.save()
+        .then(() => res.json('Board title updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+// DELETE a board
+router.route('/:boardId').delete((req, res) => {
+  Board.findByIdAndDelete(req.params.boardId)
+    .then(() => res.json('Board deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;
