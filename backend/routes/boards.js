@@ -152,4 +152,22 @@ router.route('/:boardId').delete((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//list title
+router.route('/:boardId/lists/:listId').patch((req, res) => {
+  Board.findById(req.params.boardId)
+    .then(board => {
+      const list = board.lists.id(req.params.listId);
+      if (!list) {
+        return res.status(404).json('Error: List not found.');
+      }
+
+      list.title = req.body.title;
+
+      board.save()
+        .then(() => res.json('List title updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;

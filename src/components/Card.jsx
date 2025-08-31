@@ -1,17 +1,22 @@
 import React from 'react';
 import { Draggable } from '@hello-pangea/dnd';
+import { motion } from 'framer-motion';
 import './Card.css';
 
-// Added 'onDeleteCard' to the list of props
 function Card({ card, index, listId, onOpenModal, onDeleteCard }) {
   return (
     <Draggable draggableId={card._id} index={index}>
       {(provided) => (
-        <div
+        <motion.div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="card-gradient-border" 
+          className="card-gradient-border"
+
+          layout
+          initial={{ opacity: 0, y: 50, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
         >
           <div
             className="card"
@@ -28,7 +33,7 @@ function Card({ card, index, listId, onOpenModal, onDeleteCard }) {
               &times;
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
     </Draggable>
   );

@@ -11,7 +11,8 @@ function Board({
   onDeleteList,
   onDeleteCard,
   onEditBoardTitle,
-  onDeleteBoard
+  onDeleteBoard,
+  onEditListTitle
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [boardTitle, setBoardTitle] = useState(title);
@@ -43,21 +44,21 @@ function Board({
   return (
     <div className="board">
       <header className="board-header">
-        {isEditing ? (
-          <form onSubmit={handleTitleSubmit} className="board-title-form">
-            <input
-              type="text"
-              value={boardTitle}
-              onChange={(e) => setBoardTitle(e.target.value)}
-              onBlur={handleTitleSubmit}
-              autoFocus
-              className="board-title-input"
-            />
-          </form>
-        ) : (
-          <h2 className="board-title" onClick={() => setIsEditing(true)}>
-            {boardTitle}
-          </h2>
+          {isEditing ? (
+            <form onSubmit={handleTitleSubmit} className="board-title-form">
+              <input
+                type="text"
+                value={boardTitle}
+                onChange={(e) => setBoardTitle(e.target.value)}
+                onBlur={handleTitleSubmit}
+                autoFocus
+                className="board-title-input"
+              />
+            </form>
+          ) : (
+            <h2 className="board-title" onClick={() => setIsEditing(true)}>
+              {boardTitle}
+            </h2>
         )}
         <button className="button button-danger" onClick={onDeleteBoard}>Delete Board</button>
       </header>
@@ -72,6 +73,7 @@ function Board({
             onAddCard={onAddCard}
             onDeleteCard={onDeleteCard}
             onDeleteList={onDeleteList}
+            onEditListTitle={onEditListTitle} 
           />
         ))}
         <div className="add-list">

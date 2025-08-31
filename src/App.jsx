@@ -12,7 +12,7 @@ function App() {
   const [newBoardTitle, setNewBoardTitle] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/boards')
+    axios.get('${API_URL}/api/boards')
       .then(response => {
         const fetchedBoards = response.data;
         setBoards(fetchedBoards);
@@ -22,7 +22,7 @@ function App() {
       })
       .catch(error => console.log('Error fetching boards: ', error));
   }, []);
-
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const activeBoard = boards.find((board) => board._id === activeBoardId);
 
   const handleDragEnd = (result) => {
@@ -37,14 +37,14 @@ function App() {
     destinationList.cards.splice(destination.index, 0, movedCard);
     const updatedBoards = boards.map(b => b._id === activeBoardId ? board : b);
     setBoards(updatedBoards);
-    axios.post(`http://localhost:5000/api/boards/${activeBoardId}/dnd`, { source, destination })
+    axios.post(`${API_URL}/api/boards/${activeBoardId}/dnd`, { source, destination })
       .catch(err => console.error('Failed to save drag and drop changes', err));
   };
 
   const handleAddBoard = (e) => {
     e.preventDefault();
     if (newBoardTitle.trim() === '') return;
-    axios.post('http://localhost:5000/api/boards/add', { title: newBoardTitle })
+    axios.post('${API_URL}/api/boards/add', { title: newBoardTitle })
       .then(response => {
         const newBoard = response.data;
         setBoards([...boards, newBoard]);
@@ -56,7 +56,7 @@ function App() {
 
   const handleAddList = (listTitle) => {
     if (!activeBoardId) return;
-    axios.post(`http://localhost:5000/api/boards/${activeBoardId}/lists/add`, { title: listTitle })
+    axios.post(`${API_URL}/api/boards/${activeBoardId}/lists/add`, { title: listTitle })
       .then(response => {
         const newList = response.data;
         const updatedBoards = boards.map(board => {
@@ -71,7 +71,7 @@ function App() {
   };
 
   const handleAddCard = (listId, cardText) => {
-    axios.post(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/add`, { text: cardText })
+    axios.post(`${API_URL}/api/boards/${activeBoardId}/lists/${listId}/cards/add`, { text: cardText })
       .then(response => {
         const newCard = response.data;
         const updatedBoards = boards.map(board => {
@@ -103,31 +103,33 @@ function App() {
   };
 
   const handleUpdateCard = (cardId, listId, newDetails) => {
-  const updatedBoards = boards.map(board => {
-    if (board._id === activeBoardId) {
-      const updatedLists = board.lists.map(list => {
-        if (list._id === listId) {
-          const updatedCards = list.cards.map(card => {
-            if (card._id === cardId) {
-              return { ...card, ...newDetails };
-            }
-            return card;
-          });
-          return { ...list, cards: updatedCards };
-        }
-        return list;
+    const updatedBoards = boards.map(board => {
+      if (board._id === activeBoardId) {
+        const updatedLists = board.lists.map(list => {
+          if (list._id === listId) {
+            const updatedCards = list.cards.map(card => {
+              if (card._id === cardId) {
+                return { ...card, ...newDetails };
+              }
+              return card;
+            });
+            return { ...list, cards: updatedCards };
+          }
+          return list;
+        });
+        return { ...board, lists: updatedLists };
+      }
+      return board;
+    });
+    setBoards(updatedBoards);
+    axios.patch(`${API_URL}/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`, newDetails)
+      .catch(error => {
+        console.log('Error updating card: ', error);
       });
-      return { ...board, lists: updatedLists };
-    }
-    return board;
-  });
-  setBoards(updatedBoards);
-  axios.patch(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`, newDetails)
-    .catch(error => console.log('Error updating card: ', error));
-};
+  };
 
   const handleDeleteCard = (cardId, listId) => {
-    axios.delete(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`)
+    axios.delete(`${API_URL}/api/boards/${activeBoardId}/lists/${listId}/cards/${cardId}`)
       .then(res => {
         const updatedBoards = boards.map(board => {
           if (board._id === activeBoardId) {
@@ -148,7 +150,7 @@ function App() {
   };
 
   const handleDeleteList = (listId) => {
-    axios.delete(`http://localhost:5000/api/boards/${activeBoardId}/lists/${listId}`)
+    axios.delete(`${API_URL}/api/boards/${activeBoardId}/lists/${listId}`)
       .then(response => {
         const updatedBoards = boards.map(board => {
           if (board._id === activeBoardId) {
@@ -162,17 +164,35 @@ function App() {
       .catch(error => console.log('Error deleting list: ', error));
   };
 
+  const handleEditListTitle = (listId, newTitle) => {
+    const updatedBoards = boards.map(board => {
+      if (board._id === activeBoardId) {
+        const updatedLists = board.lists.map(list => {
+          if (list._id === listId) {
+            return { ...list, title: newTitle };
+          }
+          return list;
+        });
+        return { ...board, lists: updatedLists };
+      }
+      return board;
+    });
+    setBoards(updatedBoards);
+    axios.patch(`${API_URL}/api/boards/${activeBoardId}/lists/${listId}`, { title: newTitle })
+      .catch(error => console.log('Error updating list title: ', error));
+  };
+
   const handleEditBoardTitle = (newTitle) => {
     const updatedBoards = boards.map(board =>
       board._id === activeBoardId ? { ...board, title: newTitle } : board
     );
     setBoards(updatedBoards);
-    axios.patch(`http://localhost:5000/api/boards/${activeBoardId}`, { title: newTitle })
+    axios.patch(`${API_URL}/api/boards/${activeBoardId}`, { title: newTitle })
       .catch(error => console.log('Error updating board title: ', error));
   };
 
   const handleDeleteBoard = () => {
-    axios.delete(`http://localhost:5000/api/boards/${activeBoardId}`)
+    axios.delete(`${API_URL}/api/boards/${activeBoardId}`)
       .then(res => {
         const remainingBoards = boards.filter(board => board._id !== activeBoardId);
         setBoards(remainingBoards);
@@ -244,6 +264,7 @@ function App() {
           onOpenModal={handleOpenModal}
           onDeleteBoard={handleDeleteBoard}
           onEditBoardTitle={handleEditBoardTitle}
+          onEditListTitle={handleEditListTitle}
         />
       </DragDropContext>
 
