@@ -1,6 +1,6 @@
 .board {
   padding: 20px;
-  background-color: #0079bf; /* Trello-like blue */
+  background-color: var(--board-background);
   height: 100vh;
   overflow-x: auto;
   white-space: nowrap;
@@ -15,20 +15,32 @@
   font-size: 24px;
 }
 
-/* src/components/Board.css */
+.board-title-input {
+  /* Match the h2 styles */
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: inherit;
+  color: var(--text-primary);
 
-/* ... any existing Board.css styles ... */
+  /* Remove default input styles */
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
 
 .board-lists-container {
   display: flex;
-  align-items: flex-start; /* Align lists to the top */
-  overflow-x: auto; /* Allow horizontal scrolling for lists */
+  align-items: flex-start;
+  overflow-x: auto;
   padding: 8px;
 }
 
 /* Container for the "Add List" form */
 .add-list {
-  background-color: #ffffff3d; /* Semi-transparent white */
+  background-color: #ffffff3d;
   border-radius: 8px;
   width: 272px;
   margin: 0 8px;
@@ -66,6 +78,7 @@
   border-radius: 4px;
   padding: 8px 12px;
   cursor: pointer;
+  margin-top: 8px;
   font-weight: 500;
   align-self: flex-start;
 }

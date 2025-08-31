@@ -18,7 +18,7 @@ function Board({
   const [newListTitle, setNewListTitle] = useState('');
   useEffect(() => {
     setBoardTitle(title);
-  }, [title]); 
+  }, [title]);
 
   const handleTitleSubmit = (e) => {
     e.preventDefault();
@@ -59,9 +59,7 @@ function Board({
             {boardTitle}
           </h2>
         )}
-        <button className="delete-board-button" onClick={onDeleteBoard}>
-          Delete Board
-        </button>
+        <button className="button button-danger" onClick={onDeleteBoard}>Delete Board</button>
       </header>
       <div className="board-lists-container">
         {lists && lists.map((list) => (
@@ -83,9 +81,9 @@ function Board({
               value={newListTitle}
               onChange={handleInputChange}
               placeholder="Enter list title..."
-              className="add-list-input"
+              className="unified-input"
             />
-            <button type="submit" className="add-list-button">Add List</button>
+            <button type="submit" className="button button-add">Add List</button>
           </form>
         </div>
       </div>

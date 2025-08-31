@@ -59,9 +59,9 @@ function List({ title, cards, id, onAddCard, onOpenModal, onDeleteList, onDelete
           value={newCardText}
           onChange={handleInputChange}
           placeholder="Enter a title for this card..."
-          className="add-card-input"
+          className="unified-input"
         />
-        <button type="submit" className="add-card-button">Add Card</button>
+        <button type="submit" className="button button-add">Add Card</button>
       </form>
     </div>
   );

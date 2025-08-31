@@ -7,12 +7,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 .app-header {
-  padding: 10px 20px;
-  background-color: #0067a3; /* A darker shade of blue */
-  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 20px;
+  background-color: var(--list-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-title-container {
+  padding: 2px;
+  border-radius: 9999px;
+  background: var(--accent-gradient);
+}
+
+.app-title {
+  background-color: var(--list-bottom-background);
+  color: var(--text-primary);
+  font-weight: bold;
+  padding: 8px 24px;
+  border-radius: 9999px;
+  margin: 0;
+  font-size: 1.2rem;
+}
+.header-section {
+  flex: 1;
+}
+
+.header-title {
+  text-align: center;
+}
+
+.header-nav {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .app-header h1 {

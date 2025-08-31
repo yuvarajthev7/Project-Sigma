@@ -3,7 +3,7 @@ import { Draggable } from '@hello-pangea/dnd';
 import './Card.css';
 
 // Added 'onDeleteCard' to the list of props
-function Card({ card, index, listId, onOpenModal, onDeleteCard, onUpdateCard }) {
+function Card({ card, index, listId, onOpenModal, onDeleteCard }) {
   return (
     <Draggable draggableId={card._id} index={index}>
       {(provided) => (
@@ -11,19 +11,23 @@ function Card({ card, index, listId, onOpenModal, onDeleteCard, onUpdateCard }) 
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="card"
-          onClick={() => onOpenModal(card._id, listId)}
+          className="card-gradient-border" 
         >
-          <span>{card.text}</span>
-          <button
-            className="delete-card-button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeleteCard(card._id, listId);
-            }}
+          <div
+            className="card"
+            onClick={() => onOpenModal(card._id, listId)}
           >
-            &times;
-          </button>
+            <span>{card.text}</span>
+            <button
+              className="delete-card-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteCard(card._id, listId);
+              }}
+            >
+              &times;
+            </button>
+          </div>
         </div>
       )}
     </Draggable>

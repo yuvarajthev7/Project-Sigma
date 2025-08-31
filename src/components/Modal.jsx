@@ -4,6 +4,7 @@ import './Modal.css';
 function Modal({ card, onClose, onUpdateCard }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
   useEffect(() => {
     if (card) {
       setTitle(card.text);
@@ -16,12 +17,11 @@ function Modal({ card, onClose, onUpdateCard }) {
   }
 
   const handleTitleBlur = () => {
-    // Pass up the boardId, listId, and cardId to the handler
-    onUpdateCard(card._id, card.listId, { text: title });
+    onUpdateCard(card.id, card.listId, { text: title });
   };
 
   const handleDescriptionBlur = () => {
-    onUpdateCard(card._id, card.listId, { description: description });
+    onUpdateCard(card.id, card.listId, { description: description });
   };
 
   return (

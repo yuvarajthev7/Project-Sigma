@@ -1,23 +1,22 @@
-.card{
-  padding: 10px;
+
+.card-gradient-border {
+  border-radius: 6px;
+  padding: 2px; /* This padding creates the border thickness */
+  background: var(--accent-gradient);
   margin-bottom: 8px;
-  background-color: white;
-  border-radius: 3px;
-  box-shadow:0 1px 0 rgba(9,30,66,0.25);
-  cursor:pointer;
 }
+
 .card {
-  background-color: #ffffff;
+  background-color: #f4f5f7; 
+  color: #172b4d;
   border-radius: 4px;
   padding: 8px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   font-size: 14px;
-  color: #172b4d;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 36px; /* Ensures card has a minimum height */
+  min-height: 36px;
+  cursor: pointer;
 }
 
 /* Delete button styles */

@@ -206,8 +206,10 @@ function App() {
   return (
     <div className="App">
       <header className="app-header">
-        <h1>Project Management Tool</h1>
-        <nav className="board-nav">
+        <div className="app-title-container">
+    <h1 className="app-title">Project Sigma</h1>
+  </div>
+    <nav className="board-nav">
           <span>Switch Board:</span>
           {boards.map((board) => (
             <button

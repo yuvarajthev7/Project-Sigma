@@ -1,13 +1,14 @@
 /* Main list container */
 .list {
-  background-color: #ebecf0; /* A light grey, Trello-like color */
+  background-color: var(--list-background);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 272px;
   margin: 0 8px;
   padding: 8px;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0; /* Prevents lists from shrinking */
+  flex-shrink: 0;
   max-height: 100%;
 }
 
@@ -16,13 +17,13 @@
   font-weight: 600;
   padding: 4px 8px;
   margin-bottom: 8px;
-  color: #172b4d; /* Dark blue/grey for text */
+  color: #172b4d;
 }
 
 /* Container for the cards with scrolling */
 .card-container {
-  overflow-y: auto; /* Add scroll for long lists */
-  min-height: 20px; /* Ensures droppable area is present even when empty */
+  overflow-y: auto;
+  min-height: 20px;
   padding: 0 4px;
 }
 
@@ -41,30 +42,31 @@
   border-radius: 4px;
   background-color: #ffffff;
   box-shadow: none;
-  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  box-sizing: border-box;
   margin-bottom: 8px;
   font-size: 14px;
 }
 
 .add-card-input:focus {
   outline: none;
-  border-color: #0079bf; /* Highlight color on focus */
+  border-color: #0079bf;
 }
 
 /* "Add Card" button */
 .add-card-button {
-  background-color: #0079bf; /* A nice blue */
+  background-color: #0079bf;
   color: white;
   border: none;
+  margin-top: 8px;
   border-radius: 4px;
   padding: 8px 12px;
   cursor: pointer;
   font-weight: 500;
-  align-self: flex-start; /* Align button to the left */
+  align-self: flex-start;
 }
 
 .add-card-button:hover {
-  background-color: #026aa7; /* Darker blue on hover */
+  background-color: #026aa7;
 }
 .list-header {
   display: flex;
@@ -75,8 +77,8 @@
 
 .list-title {
   font-weight: 600;
-  color: #172b4d;
-  margin: 0; /* Remove default margin */
+  color: var(--text-primary);
+  margin: 0;
 }
 
 .delete-list-button {
@@ -97,11 +99,11 @@
 
 .list-title-input {
   font-family: inherit;
-  font-size: 16px; /* Match the h3 font-size */
+  font-size: 16px;
   font-weight: 600;
   color: #172b4d;
-  border: 2px solid #0079bf; /* Highlight when editing */
+  border: 2px solid #0079bf;
   border-radius: 4px;
-  padding: 2px 6px; /* Adjust padding to match */
+  padding: 2px 6px;
   width: 100%;
 }
