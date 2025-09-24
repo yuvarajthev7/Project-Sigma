@@ -12,7 +12,7 @@ function App() {
   const [newBoardTitle, setNewBoardTitle] = useState('');
 
   useEffect(() => {
-    axios.get('${API_URL}/api/boards')
+    axios.get('/api/boards')
       .then(response => {
         const fetchedBoards = response.data;
         setBoards(fetchedBoards);
@@ -22,7 +22,7 @@ function App() {
       })
       .catch(error => console.log('Error fetching boards: ', error));
   }, []);
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = "https://www.project-sigma-9wgt.vercel.app/";
   const activeBoard = boards.find((board) => board._id === activeBoardId);
 
   const handleDragEnd = (result) => {
