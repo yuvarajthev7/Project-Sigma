@@ -10,7 +10,7 @@ function App() {
   const [activeBoardId, setActiveBoardId] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
   const [newBoardTitle, setNewBoardTitle] = useState('');
-  const API_URL = "https://www.project-sigma-9wgt.vercel.app/";
+  const API_URL = "https://www.project-sigma-9wgt.vercel.app";
   useEffect(() => {
     axios.get(`${API_URL}/api/boards`)
       .then(response => {
